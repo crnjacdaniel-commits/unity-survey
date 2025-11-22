@@ -22,7 +22,7 @@
 
     const survey = new Survey.Model(surveyJSON);
     const container = document.getElementById("surveyContainer");
-    const surveyUI = new SurveyJSUI.Survey(el=container, { model: survey });
+    const surveyUI = new SurveyJSUI.Survey(container, { model: survey });
 
     survey.onComplete.add(sender => {
       // Optional: Ergebnisse posten (Apps Script Web-App)
