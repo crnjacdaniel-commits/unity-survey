@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/survey-jquery/survey.jquery.min.js"></script>
+  <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet"/>
+</head>
+<body>
+  <div id="surveyContainer"></div>
+  <script>
+    const surveyJSON = {
+      title: "Feedback-Umfrage",
+      pages: [
+        {
+          name: "page1",
+          elements: [
+            {
+              type: "dropdown",
+              name: "favoriteGame",
+              title: "Welches Spiel gefällt dir am meisten?",
+              choices: ["Unity Adventure", "Space Shooter", "Puzzle Quest"]
+            }
+          ]
+        }
+      ]
+    };
+
+    const survey = new Survey.Model(surveyJSON);
+
+    survey.onComplete.add(function (sender) {
+      fetch("https://script.google.com/macros/s/AKfycbxtQpl6PehXIhyD_iM4FpiRyr7YBYhWVzZjnbjWnQpb_ewFwvBjwi07clq-NqbQJ7hhIA/exec", {
+        method: "POST",
+        body: JSON.stringify(sender.data)
+      });
+    });
+
+    $("#surveyContainer").Survey({ model: survey });
+  </script>
+</body>
+</html>
