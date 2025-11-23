@@ -4,7 +4,7 @@ const survey = new Survey.Model(json);
     console.log("Antworten:", data);
 
     // URL deiner Apps Script Web-App
-    const API = "https://script.google.com/macros/s/DEIN_DEPLOYMENT_ID/exec";
+    const API = "https://script.google.com/macros/s/AKfycbxtQpl6PehXIhyD_iM4FpiRyr7YBYhWVzZjnbjWnQpb_ewFwvBjwi07clq-NqbQJ7hhIA/exec";
 
     try {
       const res = await fetch(API, {
