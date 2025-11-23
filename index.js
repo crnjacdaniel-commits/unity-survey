@@ -12,7 +12,8 @@ const survey = new Survey.Model(json);
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
-      const result = await res.text();
+      const text = await res.text();
+      const result = JSON.parse(text);
       alert(result.ok ? "Antwort gespeichert!" : "Fehler beim Speichern");
     } catch (err) {
       console.error(err);
