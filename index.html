@@ -1,37 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <title>SurveyJS auf GitHub Pages</title>
-  <link href="https://unpkg.com/survey-core/defaultV2.min.css" rel="stylesheet"/>
-  <script src="https://unpkg.com/survey-core/survey.core.min.js"></script>
-  <script src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Umfrage</title>
 </head>
 <body>
-  <div id="surveyContainer"></div>
+  <h1>Umfrage</h1>
+  <form id="survey"></form>
+  <button id="submitBtn">Absenden</button>
+
   <script>
-    const surveyJSON = {
-      title: "Feedback-Umfrage",
-      pages: [
-        { elements: [
-          { type: "dropdown", name: "favoriteGame", title: "Welches Spiel gefällt dir am meisten?",
-            choices: ["Unity Adventure", "Space Shooter", "Puzzle Quest"] }
-        ] }
-      ]
-    };
+    const API = "DEINE_APPS_SCRIPT_URL";
 
-    const survey = new Survey.Model(surveyJSON);
-    const container = document.getElementById("surveyContainer");
-    const surveyUI = new SurveyJSUI.Survey(container, { model: survey });
+    async function loadOptions() {
+      const res = await fetch("options.json"); // Unity aktualisiert diese Datei
+      const options = await res.json();
+      const form = document.getElementById("survey");
+      form.innerHTML = options.map(o =>
+        `<label><input type="radio" name="answer" value="${o.id}"> ${o.text}</label><br>`
+      ).join('');
+    }
 
-    survey.onComplete.add(sender => {
-      // Optional: Ergebnisse posten (Apps Script Web-App)
-      fetch("https://script.google.com/macros/s/DEIN_SCRIPT_ID/exec", {
+    document.getElementById("submitBtn").onclick = async () => {
+      const chosen = document.querySelector('input[name="answer"]:checked');
+      if (!chosen) return alert("Bitte eine Antwort auswählen.");
+      const payload = { questionId: "q1", answer: chosen.value, userId: "" };
+      const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sender.data)
+        body: JSON.stringify(payload)
       });
-    });
+      const ok = await res.json();
+      alert(ok.ok ? "Danke!" : "Fehler beim Senden");
+    };
+
+    loadOptions();
   </script>
 </body>
 </html>
