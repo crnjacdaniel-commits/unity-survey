@@ -1,4 +1,1 @@
-[
-  { "id": "A", "text": "Antwort A" },
-  { "id": "B", "text": "Antwort B" }
-]
+[{"id":"A","text":"Antwort C"},{"id":"B","text":"Antwort D"}]
